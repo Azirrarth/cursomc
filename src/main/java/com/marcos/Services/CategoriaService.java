@@ -3,8 +3,10 @@ package com.marcos.Services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.marcos.Services.exceptions.DataIntegrityException;
 import com.marcos.Services.exceptions.ObjectNotFoundException;
 import com.marcos.domain.Categoria;
 import com.marcos.repositories.CategoriaRepository;
@@ -30,5 +32,19 @@ public class CategoriaService {
 	{
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) 
+	{
+		find(id);
+		try 
+		{
+			repo.deleteById(id);	
+		}
+		catch (DataIntegrityViolationException e) 
+		{
+			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos!");
+		}
+		
 	}
 }
