@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.marcos.Services.exceptions.DataIntegrityException;
 import com.marcos.Services.exceptions.ObjectNotFoundException;
 import com.marcos.domain.Categoria;
+import com.marcos.dto.CategoriaDTO;
 import com.marcos.repositories.CategoriaRepository;
 
 @Service
@@ -60,5 +61,10 @@ public class CategoriaService {
 	{
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) 
+	{
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 }
